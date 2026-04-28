@@ -1,6 +1,5 @@
 import io
-from pathlib import Path
-from unittest.mock import mock_open, patch
+from unittest.mock import patch
 
 from analyze_dna.full_health_analysis import (
     analyze_genome,

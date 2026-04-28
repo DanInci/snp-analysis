@@ -1,5 +1,4 @@
-from pathlib import Path
-from unittest.mock import mock_open, patch
+from unittest.mock import patch
 
 from analyze_dna.run_full_analysis import analyze_lifestyle_health, classify_zygosity, generate_actionable_protocol
 

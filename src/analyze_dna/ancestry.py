@@ -22,44 +22,44 @@ from pathlib import Path
 # genotyping arrays (23andMe v3/v4/v5, Illumina OmniExpress).
 ANCESTRY_AIMS = [
     # Very high Fst — strongest continental discriminators
-    "rs1426654",   # SLC24A5  skin pigmentation        AFR↑  EUR↓  EAS↓
-    "rs2814778",   # DARC     Duffy-null antigen        AFR↑↑ others↓
-    "rs3827760",   # EDAR     hair / teeth morphology   EAS↑  AFR↓  EUR↓
-    "rs671",       # ALDH2    alcohol metabolism        EAS↑  others↓
+    "rs1426654",  # SLC24A5  skin pigmentation        AFR↑  EUR↓  EAS↓
+    "rs2814778",  # DARC     Duffy-null antigen        AFR↑↑ others↓
+    "rs3827760",  # EDAR     hair / teeth morphology   EAS↑  AFR↓  EUR↓
+    "rs671",  # ALDH2    alcohol metabolism        EAS↑  others↓
     "rs16891982",  # SLC45A2  skin pigmentation         EUR↑  AFR↓  EAS↓
     "rs17822931",  # ABCC11   earwax / body odour       EAS↑  AFR↓  EUR↓
     # Medium Fst
     "rs12913832",  # HERC2    eye colour                EUR↑
-    "rs4988235",   # LCT      lactase persistence       EUR↑
-    "rs182549",    # LCT region
-    "rs6025",      # F5       Factor V Leiden           EUR↑
-    "rs1800562",   # HFE      hemochromatosis           EUR↑
-    "rs2476601",   # PTPN22   autoimmune                EUR↑
-    "rs1805008",   # MC1R     red hair                  EUR↑
-    "rs1805007",   # MC1R     red hair
-    "rs2228479",   # MC1R     V92M
-    "rs1042602",   # TYR      pigmentation
-    "rs1800414",   # OCA2     East-Asian pigmentation   EAS↑
-    "rs1800401",   # OCA2     pigmentation
-    "rs28777",     # SLC45A2  region
-    "rs7495174",   # OCA2     region
-    "rs1129038",   # HERC2    region
+    "rs4988235",  # LCT      lactase persistence       EUR↑
+    "rs182549",  # LCT region
+    "rs6025",  # F5       Factor V Leiden           EUR↑
+    "rs1800562",  # HFE      hemochromatosis           EUR↑
+    "rs2476601",  # PTPN22   autoimmune                EUR↑
+    "rs1805008",  # MC1R     red hair                  EUR↑
+    "rs1805007",  # MC1R     red hair
+    "rs2228479",  # MC1R     V92M
+    "rs1042602",  # TYR      pigmentation
+    "rs1800414",  # OCA2     East-Asian pigmentation   EAS↑
+    "rs1800401",  # OCA2     pigmentation
+    "rs28777",  # SLC45A2  region
+    "rs7495174",  # OCA2     region
+    "rs1129038",  # HERC2    region
     # Drug-metabolism markers with notable population variation
-    "rs762551",    # CYP1A2   caffeine
-    "rs4244285",   # CYP2C19  clopidogrel / PPIs
-    "rs3892097",   # CYP2D6   drug metabolism
-    "rs1799853",   # CYP2C9   warfarin
-    "rs1057910",   # CYP2C9*3 warfarin
+    "rs762551",  # CYP1A2   caffeine
+    "rs4244285",  # CYP2C19  clopidogrel / PPIs
+    "rs3892097",  # CYP2D6   drug metabolism
+    "rs1799853",  # CYP2C9   warfarin
+    "rs1057910",  # CYP2C9*3 warfarin
     # Additional markers with ancestry signal
-    "rs429358",    # APOE     e4  (AFR > EUR > EAS)
-    "rs7412",      # APOE     e2
-    "rs1801133",   # MTHFR    C677T
-    "rs9939609",   # FTO      obesity
-    "rs7903146",   # TCF7L2   T2D
-    "rs2187668",   # HLA-DQA1 celiac (EUR)
-    "rs1815739",   # ACTN3    power / endurance
-    "rs4680",      # COMT     dopamine clearance
-    "rs6265",      # BDNF     neuroplasticity
+    "rs429358",  # APOE     e4  (AFR > EUR > EAS)
+    "rs7412",  # APOE     e2
+    "rs1801133",  # MTHFR    C677T
+    "rs9939609",  # FTO      obesity
+    "rs7903146",  # TCF7L2   T2D
+    "rs2187668",  # HLA-DQA1 celiac (EUR)
+    "rs1815739",  # ACTN3    power / endurance
+    "rs4680",  # COMT     dopamine clearance
+    "rs6265",  # BDNF     neuroplasticity
 ]
 
 # ── Population mappings ────────────────────────────────────────────────────
@@ -80,8 +80,8 @@ GNOMAD_POPS = {
 SUPERPOP_MAP = {
     "afr": "AFR",
     "amr": "AMR",
-    "ami": "EUR",   # Amish are European-American
-    "asj": "EUR",   # Ashkenazi Jewish closest to European
+    "ami": "EUR",  # Amish are European-American
+    "asj": "EUR",  # Ashkenazi Jewish closest to European
     "eas": "EAS",
     "fin": "EUR",
     "mid": "MID",
@@ -107,18 +107,20 @@ SUPERPOP_COLORS = {
     "SAS": "#9c27b0",
 }
 
-GNOMAD_API  = "https://gnomad.broadinstitute.org/api"
-_DATASET    = "gnomad_r4"
+GNOMAD_API = "https://gnomad.broadinstitute.org/api"
+_DATASET = "gnomad_r4"
 _CACHE_FILE = "aim_frequencies.json"
-_MIN_AN     = 200   # minimum allele number to trust a population frequency
+_MIN_AN = 200  # minimum allele number to trust a population frequency
 
 
 # ── gnomAD v4 two-step query ───────────────────────────────────────────────
 
+
 def _gql(query: str) -> dict:
     payload = json.dumps({"query": query}).encode()
     req = urllib.request.Request(
-        GNOMAD_API, data=payload,
+        GNOMAD_API,
+        data=payload,
         headers={"Content-Type": "application/json", "Accept": "application/json"},
     )
     for attempt in range(4):
@@ -136,24 +138,26 @@ def _gql(query: str) -> dict:
 
 def _best_variant_id(rsid: str) -> str | None:
     """Resolve rsID → best SNP variantId via variant_search."""
-    data = _gql('{ variant_search(query: "%s", dataset: %s) { variant_id } }' % (rsid, _DATASET))
+    data = _gql(f'{{ variant_search(query: "{rsid}", dataset: {_DATASET}) {{ variant_id }} }}')
     hits = data.get("variant_search") or []
-    snps = [h["variant_id"] for h in hits
-            if len((h["variant_id"] or "").split("-")) == 4
-            and len(h["variant_id"].split("-")[2]) == 1
-            and len(h["variant_id"].split("-")[3]) == 1]
+    snps = [
+        h["variant_id"]
+        for h in hits
+        if len((h["variant_id"] or "").split("-")) == 4
+        and len(h["variant_id"].split("-")[2]) == 1
+        and len(h["variant_id"].split("-")[3]) == 1
+    ]
     if not snps:
         return None
     # Prefer non-strand-ambiguous allele pairs (avoid A/T and G/C)
-    non_ambig = [v for v in snps if set(v.split("-")[2:4]) not in ({"A","T"}, {"G","C"})]
-    return (non_ambig or snps)[0]
+    non_ambig = [v for v in snps if set(v.split("-")[2:4]) not in ({"A", "T"}, {"G", "C"})]
+    return str((non_ambig or snps)[0])
 
 
 def _fetch_populations(variant_id: str) -> dict:
     """Fetch per-population AC/AN for a specific variantId."""
     data = _gql(
-        '{ variant(variantId: "%s", dataset: %s) '
-        '{ genome { populations { id ac an } } } }' % (variant_id, _DATASET)
+        f'{{ variant(variantId: "{variant_id}", dataset: {_DATASET}) {{ genome {{ populations {{ id ac an }} }} }} }}'
     )
     variant = data.get("variant") or {}
     pops = (variant.get("genome") or {}).get("populations") or []
@@ -190,12 +194,14 @@ def _query_gnomad(rsid: str) -> dict | None:
 
 # ── Public API ─────────────────────────────────────────────────────────────
 
+
 def download_aim_frequencies(data_dir: Path) -> Path:
     """Query gnomAD v4 for all AIM frequencies and cache to JSON.
 
     Safe to re-run — only fetches markers not already in the cache.
     """
     import sys
+
     ancestry_dir = Path(data_dir) / "ancestry"
     ancestry_dir.mkdir(exist_ok=True)
     cache_path = ancestry_dir / _CACHE_FILE
@@ -213,7 +219,7 @@ def download_aim_frequencies(data_dir: Path) -> Path:
     print(f"Querying gnomAD v4 for {len(to_fetch)} markers…", file=sys.stderr)
     found = 0
     for i, rsid in enumerate(to_fetch):
-        print(f"  [{i+1}/{len(to_fetch)}] {rsid}", end="  ", flush=True, file=sys.stderr)
+        print(f"  [{i + 1}/{len(to_fetch)}] {rsid}", end="  ", flush=True, file=sys.stderr)
         result = _query_gnomad(rsid)
         time.sleep(0.2)  # stay polite
         if result:
@@ -222,7 +228,7 @@ def download_aim_frequencies(data_dir: Path) -> Path:
             print(f"✓  ({result['variantId']})", file=sys.stderr)
         else:
             print("—  not found in gnomAD v4", file=sys.stderr)
-        time.sleep(1.5)   # stay well within gnomAD rate limits
+        time.sleep(1.5)  # stay well within gnomAD rate limits
 
     with open(cache_path, "w") as f:
         json.dump(existing, f, indent=2)
@@ -236,11 +242,10 @@ def load_aim_frequencies(data_dir: Path) -> dict:
     cache_path = Path(data_dir) / "ancestry" / _CACHE_FILE
     if not cache_path.exists():
         raise FileNotFoundError(
-            "Ancestry reference not found.\n"
-            "Run the download cell in section 7 of the workshop notebook first."
+            "Ancestry reference not found.\nRun the download cell in section 7 of the workshop notebook first."
         )
     with open(cache_path) as f:
-        return json.load(f)
+        return dict(json.load(f))
 
 
 def compute_ancestry(genome_by_rsid: dict, frequencies: dict) -> tuple[dict, int]:
@@ -252,14 +257,14 @@ def compute_ancestry(genome_by_rsid: dict, frequencies: dict) -> tuple[dict, int
 
     Returns (superpop_probs: dict[str, float], n_markers_used: int).
     """
-    log_likes: dict[str, float] = {p: 0.0 for p in GNOMAD_POPS}
+    log_likes: dict[str, float] = dict.fromkeys(GNOMAD_POPS, 0.0)
     n_used = 0
 
     for rsid, freq_data in frequencies.items():
         if rsid not in genome_by_rsid:
             continue
 
-        gt  = genome_by_rsid[rsid]["genotype"]
+        gt = genome_by_rsid[rsid]["genotype"]
         ref = freq_data["ref"]
         alt = freq_data["alt"]
 
@@ -294,8 +299,8 @@ def compute_ancestry(genome_by_rsid: dict, frequencies: dict) -> tuple[dict, int
     # Softmax over gnomAD populations
     max_ll = max(log_likes.values())
     exp_ll = {p: math.exp(ll - max_ll) for p, ll in log_likes.items()}
-    total  = sum(exp_ll.values())
-    probs  = {p: v / total for p, v in exp_ll.items()}
+    total = sum(exp_ll.values())
+    probs = {p: v / total for p, v in exp_ll.items()}
 
     # Aggregate to superpopulations
     super_probs: dict[str, float] = {}
