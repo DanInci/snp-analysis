@@ -4,7 +4,7 @@
 
 <br clear="all" />
 
-A comprehensive genetic health analysis pipeline that processes 23andMe raw data to generate detailed health reports using Claude Code or other AI Agents.
+A comprehensive genetic health analysis pipeline that processes 23andMe raw data to generate detailed health reports using Claude Code or other AI Agents. Includes an interactive **workshop notebook** for exploring and visualising your genome step by step.
 
 ![Pipeline Architecture](.github/pipeline-graphics.webp)
 
@@ -17,6 +17,36 @@ YouTube: https://youtu.be/O1ICQworLVc
 Website: https://nicksaraev.com
 
 The original concept uses Claude Code (or other agents) to analyze 23andMe genetic data against ClinVar and PharmGKB databases to generate personalized health reports.
+
+---
+
+## Workshop Notebook
+
+`workshop.ipynb` is an interactive Jupyter notebook that walks through the entire pipeline step by step — ideal for learning, teaching, or exploring your genome visually.
+
+```bash
+uv run jupyter notebook workshop.ipynb
+```
+
+**What it covers:**
+
+| Section | Description |
+|---------|-------------|
+| 1 — Load genome | Parse 23andMe TSV, build rsID and position indexes |
+| 2 — Individual SNP lookups | APOE haplotype, CYP drug metabolism, MTHFR |
+| 3 — Curated SNP analysis | ~200 pre-interpreted SNPs with impact scoring |
+| 4 — ClinVar disease risk | Scan 341,000+ clinical variants, pathogenic findings |
+| 5 — PharmGKB drug interactions | Level 1A/1B clinical guideline drug responses |
+| 6 — Summary dashboard | 6-panel overview chart |
+| 7 — Ancestry composition | Continental ancestry inference from gnomAD v4 AIMs |
+
+All tables render as styled pandas DataFrames; all charts use matplotlib. Results are colour-coded by impact level.
+
+### Ancestry Composition
+
+Section 7 queries [gnomAD v4](https://gnomad.broadinstitute.org/) for allele frequencies at ~35 ancestry-informative markers (AIMs) and applies Hardy-Weinberg log-likelihood inference to estimate your continental ancestry (African, Admixed American, East Asian, European, Middle Eastern, South Asian).
+
+Frequencies are fetched once and cached in `data/ancestry/aim_frequencies.json` — all subsequent runs are fully offline.
 
 ---
 
@@ -275,16 +305,21 @@ This is an experimental feature exploring DNA-based image generation.
 
 ```
 analyze-dna/
-├── README.md                  # This file
-├── CLAUDE.md                  # Instructions for Claude Code
-├── pyproject.toml             # UV/pip package configuration
+├── README.md                      # This file
+├── CLAUDE.md                      # Instructions for Claude Code
+├── pyproject.toml                 # UV/pip package configuration
+├── workshop.ipynb                 # Interactive workshop notebook
+├── workshop_helpers.py            # Visualisation helpers for the notebook
 ├── data/
-│   ├── clinvar_alleles.tsv.gz # ClinVar database (included, auto-extracted on run)
-│   └── clinical_*.tsv         # PharmGKB data (included)
+│   ├── clinvar_alleles.tsv.gz     # ClinVar database (included, auto-extracted on run)
+│   ├── clinical_*.tsv             # PharmGKB data (included)
+│   └── ancestry/
+│       └── aim_frequencies.json   # gnomAD v4 AIM frequencies (created on first run)
 └── src/analyze_dna/
-    ├── cli.py                 # CLI entry point
-    ├── run_full_analysis.py   # Main analysis logic
-    └── ...                    # Analysis modules
+    ├── cli.py                     # CLI entry point
+    ├── run_full_analysis.py       # Main analysis logic
+    ├── ancestry.py                # Ancestry composition inference
+    └── ...                        # Analysis modules
 ```
 
 Note: The genome file path and output directory are specified via CLI arguments. No specific file layout is required.
@@ -323,6 +358,7 @@ uv run analyze-dna full-analysis ~/Downloads/genome_mom.txt --output-stdout --na
 | clinvar_alleles.tsv.gz | ~60MB (zipped) | **Yes** | Included (auto-extracted to 289MB) |
 | clinical_annotations.tsv | ~850KB | Yes | PharmGKB |
 | clinical_ann_alleles.tsv | ~5.5MB | Yes | PharmGKB |
+| ancestry/aim_frequencies.json | ~10KB | No | Created on first notebook run (gnomAD v4) |
 
 ### Updating Data (Quarterly Recommended)
 
@@ -339,6 +375,10 @@ This downloads the latest `variant_summary.txt.gz` from NCBI and converts it to 
 **PharmGKB** (manual): https://www.pharmgkb.org/downloads (free account required)
 - Download "Clinical Annotations" files
 - Replace `data/clinical_annotations.tsv` and `data/clinical_ann_alleles.tsv`
+
+**gnomAD ancestry frequencies** (automatic, run from the workshop notebook):
+- Delete `data/ancestry/aim_frequencies.json` and re-run section 7
+- Re-fetches the latest gnomAD v4 population frequencies for all AIMs
 
 ---
 
