@@ -1,0 +1,20 @@
+.claude/settings.local.json
+
+# file too large for github. it will be created automatically by ungzipping the *.gz file
+data/clinvar_alleles.tsv
+
+# all genome data
+data/genome.txt
+data/*.txt
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+.coverage
+
+# Generated Reports
+reports/
+data/ancestry/aim_frequencies.json

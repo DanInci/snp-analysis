@@ -1,0 +1,63 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh api:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh run list:*)",
+      "Bash(git add:*)",
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)",
+      "Bash(git merge:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(gunzip:*)",
+      "Bash(xxd:*)",
+      "Bash(zcat:*)",
+      "Bash(compsize:*)",
+      "Bash(mount:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh run view:*)",
+      "Bash(head:*)",
+      "Bash(lrzip:*)",
+      "Bash(ls:*)",
+      "Bash(uv run python3:*)",
+      "Bash(uv run:*)",
+      "Bash(uv sync:*)",
+      "Bash(wc:*)",
+      "WebFetch(domain:ftp.ncbi.nlm.nih.gov)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:www.ncbi.nlm.nih.gov)",
+      "WebSearch",
+      "Bash(chmod:*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat << 'EOF'\nHi! Welcome to analyze-your-dna – your AI assistant for genetic health analysis.\n\nI help with:\n• Analyzing 23andMe data against ClinVar & PharmGKB\n• Generating personalized health reports\n• Discussing SNPs, risks, and drug interactions\n• Adding custom SNPs or fixing issues\n\nWhat can I help you with today?\nEOF"
+          }
+        ]
+      }
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat << 'EOF'\nHi! Welcome to analyze-your-dna – your AI assistant for genetic health analysis.\n\nI help with:\n• Analyzing 23andMe data against ClinVar & PharmGKB\n• Generating personalized health reports\n• Discussing SNPs, risks, and drug interactions\n• Adding custom SNPs or fixing issues\n\nWhat can I help you with today?\nEOF"
+          }
+        ]
+      }
+    ]
+  }
+}

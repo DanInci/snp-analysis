@@ -1,0 +1,96 @@
+[project]
+name = "analyze-dna"
+version = "1.0.0"
+description = "Genetic health analysis pipeline for 23andMe data"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-or-later"
+authors = [{ name = "Genetic Health Analysis" }]
+keywords = ["genetics", "23andme", "health", "genomics", "clinvar", "pharmgkb", "dna", "snp"]
+
+dependencies = [
+    "click>=8.0.0",
+    "ipykernel>=7.2.0",
+    "jupyter>=1.0.0",
+    "matplotlib>=3.7.0",
+    "pandas>=2.3.3",
+    "polars>=1.0.0",
+    "typing-extensions>=4.15.0",
+]
+
+[project.optional-dependencies]
+# Kept for backwards compatibility (polars is now a core dependency)
+fast = []
+# For potential numeric optimizations
+perf = [
+    "numpy>=1.24.0",
+]
+# All optional dependencies
+all = [
+    "analyze-dna[fast,perf]",
+]
+
+[project.scripts]
+analyze-dna = "analyze_dna.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/analyze_dna"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4"]
+ignore = ["E501"]  # Line length handled separately
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = false  # Gradual typing
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "--cov=analyze_dna --cov-report=term-missing"
+
+[dependency-groups]
+dev = [
+    "pylint>=4.0.4",
+    "pyright>=1.1.0",
+    "pytest>=9.0.2",
+    "ruff>=0.4.0",
+    "mypy>=1.10.0",
+    "pytest-cov>=4.0.0",
+]
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "line-too-long",
+    "duplicate-code",
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "too-many-lines",
+    "too-many-locals",
+    "too-many-branches",
+    "too-many-statements",
+    "too-many-instance-attributes",
+    "too-many-arguments",
+    "unspecified-encoding",
+    "import-error",
+    "fixme",
+    "wrong-import-position",
+    "import-outside-toplevel",
+    "invalid-name",
+    "broad-exception-caught",
+    "cell-var-from-loop",
+    "no-else-return",
+    "f-string-without-interpolation",
+    "cyclic-import",
+]
